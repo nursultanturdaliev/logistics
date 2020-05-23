@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:logistics/src/signup.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -54,6 +55,35 @@ class _LoginPageState extends State<LoginPage> {
                   border: InputBorder.none,
                   fillColor: Color(0xfff3f3f4),
                   filled: true))
+        ],
+      ),
+    );
+  }
+
+  Widget _entryFieldPhone(String title, {bool isPassword = false}) {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            title,
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          TextField(
+              obscureText: isPassword,
+              decoration: InputDecoration(
+                  border: InputBorder.none,
+                  fillColor: Color(0xfff3f3f4),
+                  filled: true),
+                  inputFormatters: <TextInputFormatter>[
+                    LengthLimitingTextInputFormatter(12),
+                    WhitelistingTextInputFormatter.digitsOnly,
+                    BlacklistingTextInputFormatter.singleLineFormatter
+                  ],)
         ],
       ),
     );
@@ -222,10 +252,10 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _emailPasswordWidget() {
+  Widget _phoneNumberPasswordWidget() {
     return Column(
       children: <Widget>[
-        _entryField("Email id"),
+        _entryFieldPhone("Telephone"),
         _entryField("Password", isPassword: true),
       ],
     );
@@ -253,7 +283,7 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(height: height * .2),
                   _title(),
                   SizedBox(height: 50),
-                  _emailPasswordWidget(),
+                  _phoneNumberPasswordWidget(),
                   SizedBox(height: 20),
                   _submitButton(),
                   Container(
