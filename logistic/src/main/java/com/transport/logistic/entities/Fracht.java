@@ -6,6 +6,7 @@ import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,24 +16,28 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 @Table(name="Fracht")
 public class Fracht implements Serializable{
 	
 
-	private static final long serialVersionUID = -7267884756864978251L;
+	private static final long serialVersionUID = 1L;
 
 	@Id()
 	@Column(name="fracht_id")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int frachtId; 
 	
-	@ManyToOne
-	@JoinColumn(name="owner", nullable=false, insertable=false, updatable=false, referencedColumnName="owner_id")
+	@ManyToOne(optional = true, fetch = FetchType.LAZY)
+	@JoinColumn(name="owner_id")
+	@JsonIgnore
 	private Owner owner;
 
-	@Column(name="loadDescription")
+	@Column(name="loaddescription")
 	private String loadDescription; 
 	
 	@Column(name="weight")
@@ -70,6 +75,7 @@ public class Fracht implements Serializable{
 
 
 
+
 	public String getLoadDescription() {
 		return loadDescription;
 	}
@@ -82,13 +88,11 @@ public class Fracht implements Serializable{
 
 
 
-	public String getloadDescription() {
-		return loadDescription;
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
-	public void setloadDescription(String loadDescription) {
-		this.loadDescription = loadDescription;
-	}
+
 
 	public double getWeight() {
 		return weight;
